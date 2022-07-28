@@ -17,6 +17,17 @@ public class GetThread implements Runnable{
     @Autowired
     public PeopleRepository peopleRepository ;
 
+    private List<People> Cache;
+
+    public List<People> searchPeople(){
+        this.Cache = peopleRepository.findAll();
+        return this.Cache;
+    }
+
+    public List<People> getCache(){
+        return Cache;
+    }
+
     public void InstanceRepository(PeopleRepository peopleRepository) {
         this.peopleRepository = peopleRepository;
         new Thread(this).start();}
@@ -26,13 +37,6 @@ public class GetThread implements Runnable{
         this.InstanceRepository(this.peopleRepository);
         return this.peopleRepository.findAll();}
 
-    public Optional<People> findById(Integer id){return this.peopleRepository.findById(id);}
-
-    public List<People> pessoas = new ArrayList<>();
-
-    public PeopleList todasRegistradas = new PeopleList();
-
-
     @Override
     public void run() {
         while (true) {
@@ -40,12 +44,11 @@ public class GetThread implements Runnable{
                 Thread.sleep(10000);
                 System.out.println("ENTROU NO WHILE");
 
-                if (LocalTime.now().getHour() == 11 && LocalTime.now().getMinute() >= 0) {
-//                    users = peopleService.findAllPeople();
-                    System.out.println("here");
-                    this.pessoas = findAllPeople();
-                    this.todasRegistradas.setAllPeople(findAllPeople());
-                    System.out.println(this.pessoas);
+                if (LocalTime.now().getHour() == 15 && LocalTime.now().getMinute() >= 17) {
+                    findAllPeople();
+                    searchPeople();
+
+                    System.out.println("CACHE - "+ getCache());
                 }
             } catch (Exception e) {
 //                Thread.currentThread().interrupt();

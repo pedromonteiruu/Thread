@@ -31,21 +31,11 @@ public class PeopleController {
 
     @GetMapping("/verusuarios")
     @ResponseBody
-    public List<People> verUsuarios(){
-        GetThread getThread = new GetThread();
-        List<People> pessoinhas = getThread.findAllPeople();
-        return pessoinhas;
+    public List<People> getCache(){
+        return peopleService.getCache();
     }
 
-
-
-    @GetMapping("/{id}")
-    public Optional<People> findById(@PathVariable Integer id){
-        Optional<People> pessoinha = peopleService.findById(id);
-        System.out.println(pessoinha+"É A PESSOINHA");
-        System.out.println("PESSOA 1 - "+ peopleList.getAllPeople().get(1));
-        return peopleService.findById(id);
-    }
+    
 
 
 }
