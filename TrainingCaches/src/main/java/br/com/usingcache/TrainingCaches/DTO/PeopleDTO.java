@@ -5,6 +5,7 @@ import br.com.usingcache.TrainingCaches.Entities.People;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -13,13 +14,22 @@ import java.util.List;
 @AllArgsConstructor
 public class PeopleDTO {
 
-    private String FullName;
+    private String Nome_Completo;
     private Integer UserId;
 
-    public PeopleDTO(List<People> pessoa){
-        for(int i=0;i<pessoa.size();i++){
-            this.FullName = pessoa.get(i).getFirstName() + pessoa.get(i).getLastName();
-            this.UserId = pessoa.get(i).getId();
-        }
+    public PeopleDTO(People pessoa){
+        this.Nome_Completo = pessoa.getFirstName() + " " + pessoa.getLastName();
+        this.UserId = pessoa.getId();
+    }
+
+    public static PeopleDTO newPeopleDto(People people){
+        PeopleDTO peopleUtilities = new PeopleDTO();
+        peopleUtilities.setNome_Completo(people.getFirstName()+" "+ people.getLastName());
+        peopleUtilities.setUserId(people.getId());
+        return peopleUtilities;
+    }
+
+    public static Page<PeopleDTO> pageToPeopleDTO(Page<People> people){
+        return people.map(PeopleDTO::new);
     }
 }
